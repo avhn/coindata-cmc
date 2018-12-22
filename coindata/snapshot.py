@@ -1,22 +1,37 @@
+"""Takes snapshot of the day, provides realpaths to other modules."""
 import json
 import os
 import time
-import coindata
+
+from . import request
+from . import ISO8601
 
 
-# initilize archive folders
-# uses this file's path as in project directory
-_today = time.strftime(coindata.ISO8601)
-_project_dir = os.path.dirname(os.path.realpath(__file__))
+# initialize archive folders
+# uses this file's path as container directory
+_TODAY = time.strftime(ISO8601)
+_CONTAINER_DIR = os.path.dirname(os.path.realpath(__file__))
 
-snapshot_archive_dir = os.path.join(_project_dir, 'snapshots')
-os.path.exists(snapshot_archive_dir) or os.mkdir(snapshot_archive_dir)
+_SNAPSHOT_ARCHIVE_DIR = os.path.join(_CONTAINER_DIR, 'snapshots')
+if not os.path.exists(_SNAPSHOT_ARCHIVE_DIR):
+    os.mkdir(_SNAPSHOT_ARCHIVE_DIR)
 
-snapshot_dir = os.path.join(snapshot_archive_dir, _today)
-os.path.exists(snapshot_dir) or os.mkdir(snapshot_dir)
+_SNAPSHOT_DIR = os.path.join(_SNAPSHOT_ARCHIVE_DIR, _TODAY)
+if not os.path.exists(_SNAPSHOT_DIR):
+    os.mkdir(_SNAPSHOT_DIR)
+    
+_TICKER_DIR = os.path.join(_CONTAINER_DIR, 'tickers')
+if not os.path.exists(_TICKER_DIR):
+    os.mkdir(_TICKER_DIR)
 
-ticker_dir = os.path.join(_project_dir, 'tickers')
-os.path.exists(ticker_dir) or os.mkdir(ticker_dir)
+# below for access of other modules
+TICKER_PATH = None
+TICKERS = sorted(os.listdir(_TICKER_DIR))
+LATEST_SNAPSHOT_DIR = None
+SNAPSHOTS = sorted(os.listdir(_SNAPSHOT_ARCHIVE_DIR))
+if SNAPSHOTS:
+    LATEST_SNAPSHOT_DIR = os.path.join(_SNAPSHOT_ARCHIVE_DIR, SNAPSHOTS[-1])
+    TICKER_PATH = os.path.join(_TICKER_DIR, TICKERS[-1])
 
 
 def snapshot(top=150):
@@ -26,27 +41,22 @@ def snapshot(top=150):
     Args:
         top: Decimal, highest rank of the snapshot from ticker.
     """
-
-    ticker = coindata.get_ticker()
+    
+    ticker = request.get_ticker()
     
     # dump ticker
-    with open(os.path.join(ticker_dir, _today + '.json'), 'w') as file:
+    with open(os.path.join(_TICKER_DIR, _TODAY + '.json'), 'w') as file:
         file.write(json.dumps(ticker))
 
     # fetch symbols
     cryptos = [i['symbol'] for i in ticker[:top]]
-
-    portfolio = read_portfolio()
-    for c in portfolio:
-        if c.upper() not in cryptos:
-            cryptos.append(c)
-
+    
     # write
-    for i, c in enumerate(cryptos):
-        coindata.write(c, snapshot_dir)
-        print(i + 1, "- {} fetched".format(c))
+    for i, crypto in enumerate(cryptos):
+        request.write(crypto, _SNAPSHOT_DIR)
+        print(i + 1, "- {} fetched".format(crypto))
         
-    print('Successfully written at', snapshot_dir, 'and', ticker_dir)
+    print('Successfully written at', _SNAPSHOT_DIR, 'and', _TICKER_DIR)
 
 
 def main():
@@ -55,6 +65,9 @@ def main():
 
     except ConnectionError:
         print('No internet connection!')
+
+    except KeyboardInterrupt:
+        print(os.newline + 'Exiting...')
 
 
 if __name__ == '__main__':
