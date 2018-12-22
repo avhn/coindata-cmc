@@ -1,24 +1,14 @@
+"""Handles Offline Snapshot datas."""
 import json
 import os
-from .main import read as read_data
-from .snapshot import snapshot_archive_dir, ticker_dir
 
+from .request import read as read_data
+from .snapshot import LATEST_SNAPSHOT_DIR, TICKER_PATH
+from .utils import to_datetime
 
-# initilize latest archive paths
-SNAPSHOTS = snapshot_archive_dir
-TICKERS = ticker_dir
-
-try:
-    # snapshot directory
-    LATEST_FOLDER = sorted(os.listdir(SNAPSHOTS))[-1]
-    SNAPSHOT = os.path.join(SNAPSHOTS, LATEST_FOLDER)
-
-    # ticker file
-    LATEST_FILE = sorted(os.listdir(TICKERS))[-1]
-    TICKER = os.path.join(TICKERS, LATEST_FILE)
-
-except FileNotFoundError as e:
-    print('Invalid filepath!', os.linesep, e)
+# check for existance of data
+if not LATEST_SNAPSHOT_DIR:
+    raise ValueError('Parser error: No snapshot available!')
 
 
 def symbols():
@@ -26,15 +16,14 @@ def symbols():
 
     result = list()
 
-    for s in os.listdir(SNAPSHOT):
-
+    for symbol in os.listdir(LATEST_SNAPSHOT_DIR):
         # remove .csv from names
-        s = s[:-4]
-        result.append(s)
+        symbol = symbol[:-4]
+        result.append(symbol)
 
     return result
-    
-    
+
+
 def normalize_str(string):
     """String to number."""
 
@@ -59,7 +48,6 @@ def parse_ticker(indicator=None):
     Returns:
         A sequence of dicts.
         If indicator passed, returns just one dict.
-
     Raises:
         ValueError: Indicator not found
         FileNotFoundError: Path is wrong
@@ -67,11 +55,11 @@ def parse_ticker(indicator=None):
 
     # read ticker
     try:
-        with open(TICKER) as file:
+        with open(TICKER_PATH) as file:
             ticker = json.loads(file.read())
 
     except FileNotFoundError:
-        raise FileNotFoundError('Ticker file is not at: ', TICKER)
+        raise FileNotFoundError('Ticker file is not at: ', TICKER_PATH)
 
     # normalize numbers from str
     for i in range(len(ticker)):
@@ -84,7 +72,7 @@ def parse_ticker(indicator=None):
 
         for data in ticker:
             for key in keys:
-                if type(data[key]) is str and data[key].upper() == indicator.upper():
+                if isinstance(data[key], str) and data[key].upper() == indicator.upper():
                     return data
 
         # indicator is not fould in snapshot
@@ -115,6 +103,72 @@ def parse(indicator):
 
     # set path of data
     filename = symbol.upper() + '.csv'
-    filepath = os.path.join(SNAPSHOT, filename)
+    filepath = os.path.join(LATEST_SNAPSHOT_DIR, filename)
 
     return read_data(filepath)
+
+
+def vector_of(indicator):
+    """Fetch daily data.
+
+    Computes daily change, circulation supply, datetime object
+    from cached snapshot. Using both ticker and historical data.
+
+    Args:
+        indicator: Indicator of crypto
+
+    Returns:
+        Old to new sequence.
+        Full list of keys for one item:
+
+        dict_keys([
+            'Date': string,
+            'Open*': float,
+            'High': float,
+            'Low': float,
+            'Close**': float,
+            'Volume': float,
+            'Market Cap': float,
+
+            # additional info below #
+            'date': datetime.object,
+            'circulation': decimal,
+            'change': float,
+        ])
+
+        Computation of additional keys:
+
+            'date': datetime.datetime object
+            'circulation': Market Cap / Open*
+            'change': Market Cap / previous Market Cap
+    """
+
+    result = list()
+    max_supply = parse_ticker(indicator)['max_supply']
+    previous = None
+
+    for data in parse(indicator):
+        if data['Market Cap'] != '-':
+
+            # generate datetime object
+            date = to_datetime(data['Date'])
+            data['date'] = date
+
+            if previous:
+
+                # add daily change
+                data['change'] = round(data['Market Cap'] / previous['Market Cap'], 3)
+
+                # add circulation
+                circulation = int(data['Market Cap'] / data['Open*'])
+                if max_supply and max_supply < circulation:
+                    circulation = max_supply
+
+                data['circulation'] = circulation
+
+                # set new previous
+                result.insert(0, data)
+
+            previous = data
+
+    return result

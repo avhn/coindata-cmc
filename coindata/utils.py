@@ -1,6 +1,8 @@
+"""Utility functions defined here."""
 import csv
 from datetime import datetime
-from coindata import ISO8601
+
+from . import ISO8601
 
 
 def to_datetime(string):
@@ -28,7 +30,7 @@ def format_date(date, reformat='%b %d, %Y'):
         String formatted with reformat arg.
     """
 
-    if type(date) is str:
+    if isinstance(date, str):
         date = to_datetime(date)
 
     return date.strftime(reformat)
