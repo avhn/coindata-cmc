@@ -1,14 +1,12 @@
-from codecs import open
+"""
+Handles online network requests.
+Writes data, reads as written to use as cache.
+"""
 import csv
 from datetime import datetime
 import os
-import sys
 from bs4 import BeautifulSoup
 import requests
-
-# xrange for Python 2.*
-if sys.version_info < (3, ):
-    range = xrange
 
 TICKER_ENDPOINT = 'https://api.coinmarketcap.com/v1/ticker/'
 GLOBAL_ENDPOINT = 'https://api.coinmarketcap.com/v1/global/'
@@ -89,6 +87,7 @@ def get_id(string):
             break
     return result
 
+
 def retrieve_raw(crypto):
 
     """
@@ -112,7 +111,7 @@ def retrieve_raw(crypto):
     data = list()
     for i, tag in enumerate(page):
         tag = tag.get_text().replace('\\n', ' ').split()
-        if i is 0:
+        if i == 0:
             # start line
             tag = tag[:-2] + [' '.join(tag[-2:])]
         else:
@@ -185,7 +184,7 @@ def write(crypto, dir_path=None):
     file_path = os.path.join(dir_path, file_name)
     data = retrieve_raw(crypto)
 
-    with open(file_path, 'w') as csv_file:
+    with open(file_path, 'w', encoding='utf-8') as csv_file:
         writer = csv.writer(csv_file)
         writer.writerows(data)
 
@@ -205,12 +204,12 @@ def read(file_path):
     """
     result = list()
 
-    with open(file_path, 'r') as csv_file:
+    with open(file_path, 'r', encoding='utf-8') as csv_file:
         reader = csv.reader(csv_file)
         keys = list()
 
         for i, row in enumerate(reader):
-            if i is 0:
+            if i == 0:
                 keys = row
                 continue
 
@@ -224,26 +223,3 @@ def read(file_path):
 
     return result
 
-
-def interval(data, start, end):
-
-    """
-    Finds [start, end] time interval within data.
-
-    Args:
-        data: coindata output
-        start: Start of interval, datetime object
-        end: End of interval, datetime object
-
-    Returns:
-        Cherry picked sequence in data. Same format as retrieve.
-    """
-
-    result = list()
-    for day in data:
-
-        date = datetime.strptime(day['Date'], ISO8601)
-        if start <= date <= end:
-            result.append(day)
-
-    return result
