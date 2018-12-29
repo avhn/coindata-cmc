@@ -2,7 +2,7 @@
 import csv
 from datetime import datetime
 
-from . import ISO8601
+from .request import ISO8601
 
 
 def to_datetime(string):

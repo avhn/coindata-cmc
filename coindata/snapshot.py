@@ -4,7 +4,7 @@ import os
 import time
 
 from . import request
-from . import ISO8601
+from .request import ISO8601
 
 
 # initialize archive folders
