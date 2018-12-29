@@ -10,3 +10,7 @@ __pycache__
 build
 *.egg-info
 dist
+
+# cache directories
+snapshots
+tickers
