@@ -36,7 +36,7 @@ if SNAPSHOTS:
 
 def snapshot(top=150):
 
-    """Takes snapshot.
+    """Takes snapshot.          
 
     Args:
         top: Decimal, highest rank of the snapshot from ticker.
@@ -67,7 +67,7 @@ def main():
         print('No internet connection!')
 
     except KeyboardInterrupt:
-        print(os.newline + 'Exiting...')
+        print(os.linesep + 'Exiting...')
 
 
 if __name__ == '__main__':
