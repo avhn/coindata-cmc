@@ -1,126 +1,140 @@
 Coindata
 ========
 |PyPI|
+|Python|
 |Build Status|
 |License|
 
-Parse any crypto's historical data from CoinMarketCap, write .csv files or handle as you wish. Do not waste time.
+Take one snapshot, use all data as cached.
 
-Compatible with Python 2 & 3.
+Use it for machine learning, vector prediction or for whatever you like. Be my guest.
+
+How this works?
+---------------
+You take one snapshot, and access hundreds of cryptos without slowing down.
+
+Basically, this program parses all historical data, stores/caches at CSV files through running a snapshot.
+When you access through this package, requesting a data vector, calculates what coinmarketcap doesn't give you,
+like circulation supply, daily percentage change, datetime object etc. and returns the vector.
+
+If you want, you can use .csv files seperately.
+
+File structure:
+---------------
+
+::
+
+    source-code:
+        coindata:
+            snapshots:
+                CSV files
+            tickers:
+                JSON files
+
 
 Install
 -------
 
-Install with pip:
+Install with pip or clone, both works.
 
 .. code:: bash
 
-   pip install coindata
+    $ pip install coindata
+    ---- or ----
+    $ git clone git@github.com:anaxilaus/coindata
+    $ python coindata/setup.py install
 
-Install remotely:
+Modules
+-------
 
-.. code:: bash
-
-   python setup.py install
-
-Usage
------
-
-Retrieve
-^^^^^^^^
-
-Obtain data instantly?:
-
-.. code:: python
-
-   >>> import coindata
-   >>> coindata.retrieve('LTC')
-
-Done!
-
-.. code:: python
-
-   [
-
-   {'Date': '2018-07-07', 'Open*': 83.40, 'High': 86.20, 'Low': 80.70, 'Close**': 86.20, 'Volume': 238937000, 'Market Cap': 4778260000},
-   .
-   .
-   .
-   {'Date': '2013-04-28', 'Open*': 4.30, 'High': 4.40, 'Low': 4.18, 'Close**': 4.35, 'Volume': '-', 'Market Cap': 73773400}
-
-   ]
-
-Write .csv file
-^^^^^^^^^^^^^^^
-
-.. code:: python
-
-   coindata.write('LTC', 'FILE_PATH.csv')
-
-+------------+--------+-------+-------+----------+-----------+------------+
-| Date       | Open*  | High  | Low   | Close**  | Volume    | Market Cap |
-+============+========+=======+=======+==========+===========+============+
-| 2018-07-07 | 83.40  | 86.20 | 80.70 | 86.20    | 238937000 | 4778260000 |
-+------------+--------+-------+-------+----------+-----------+------------+
-| 2018-07-06 | 83.84  | 84.60 | 81.32 | 83.38    | 253160000 | 4801850000 |
-+------------+--------+-------+-------+----------+-----------+------------+
-| ...        | ...    | ...   | ...   | ...      | ...       | ...        |
-+------------+--------+-------+-------+----------+-----------+------------+
-| ...        | ...    | ...   | ...   | ...      | ...       | ...        |
-+------------+--------+-------+-------+----------+-----------+------------+
-
-Get documentation with help(* func). You can use:
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+There are 3 modules you will use:
 
 ::
 
-   * retrieve
-   * write
-   * read
-   * interval
-   * retrieve_raw
-   * get_global_data
-   * get_ticker
-   * get_id
+    snapshot
+    parser
+    request
 
-Notes
-^^^^^
-``+ Use either symbol or name of crypto. Both works.``
+Update cache with ``snapshot``
+------------------------------
+
+``Note:`` It will ask for a snapshot at initial import, and show you the progress, write out the cache path.
 
 .. code:: python
 
-   # these give same outputs
-   >>> coindata.retrieve('ltc')
-   >>> coindata.retrieve('LTC')
-   >>> coindata.retrieve('litecoin')
-   >>> coindata.retrieve('LITECOIN')
+    >>> coindata.snapshot.take()
+
+Get data with ``parser``
+------------------------
+
+.. code:: python
+
+    >>> coindata.parser.vector_of('btc')
+        [
+          . . .
+         [ 'Date': string,
+           'Open*': float,
+           'High': float,
+           'Low': float,
+           'Close**': float,
+           'Volume': float,
+           'Market Cap': float,
+           # additional info below #
+           'date': datetime.object,
+           'circulation': decimal,
+           'change': float ]
+           . . .
+        ]
+
+Get specific with ``request``
+-----------------------------
+
+You don't need to use if you don't want to get specific. API related operations. ( write, read, retrieve without writing, get ticker etc. )
+
+``Note:`` I recommend caching with snapshot.
+
+.. code:: python
+
+    # write all history of one $indicator to $where as CSV file
+    >>> coindata.request.write($indicator, $where)
+
+
+Get documentation for more with built-in help() or read the code.
+
+Important Notes
+---------------
+
+``+ Symbol, name and case doesn't matter.``
+
+::
+
+    btc = BTC = bitcoin = BITCOIN
 
 ``+ Based on USD.``
 
-``+ Date notation is ISO8601.``
-
+``+ Date notation is ISO8601 in CSV files.``
 .. code:: python
 
-   >>> coindata.ISO8601
-   "%Y-%m-%d"
+    >>> coindata.ISO8601
+    "%Y-%m-%d"
 
-Support
-^^^^^^^
-Tweet, or donate anytime you feel this helped you.
 
-|Tweet|
+Give this a star this if you feel this helped you.
 
-- BTC: 16XwDdxUaphSX4yWDTTiSfNy2dTyEZ5MLy
-- ETH: 0x35F4B63f7eBBB2E6080F7f9f797A068004faf323
-- LTC: LdukNLZqzeEvvFYMw98L9Rj8AYvP86BhEe
+Also, if you want to buy a beer:
 
+::
+
+    BTC: 16XwDdxUaphSX4yWDTTiSfNy2dTyEZ5MLy
+    ETH: 0x35F4B63f7eBBB2E6080F7f9f797A068004faf323
+    LTC: LdukNLZqzeEvvFYMw98L9Rj8AYvP86BhEe
 
 
 .. |PyPI| image:: https://badge.fury.io/py/coindata.svg
     :target: https://badge.fury.io/py/coindata
-.. |Build Status| image:: https://travis-ci.org/anaxilaus/coindata.svg?branch=master
-    :target: https://travis-ci.org/anaxilaus/coindata
+.. |Build Status| image:: https://travis-ci.org/Anaxilaus/coindata.svg?branch=master
+    :target: https://travis-ci.org/Anaxilaus/coindata
 .. |License| image:: https://img.shields.io/badge/license-MIT-green.svg
-    :target: https://github.com/anaxilaus/coindata/blob/master/LICENSE
-.. |Tweet| image:: https://img.shields.io/twitter/url/https/github.com/anaxilaus/coindata.svg?style=social
-    :target: https://twitter.com/intent/tweet?text=Check%20this%20out:&url=https%3A%2F%2Fgithub.com%2Fanaxilaus%2Fcoindata
+    :target: https://github.com/Anaxilaus/coindata/blob/master/LICENSE
+.. |Python| image:: https://img.shields.io/badge/Python-3.5|3.6|3.7-blue.svg
+    :target: https://github.com/Anaxilaus/coindata/blob/master/.travis.yml

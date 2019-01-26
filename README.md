@@ -1,72 +1,108 @@
 # Coindata
-[![PyPI version](https://badge.fury.io/py/coindata.svg)/](https://badge.fury.io/py/coindata)
-[![Build Status](https://travis-ci.org/anaxilaus/coindata.svg?branch=master)](https://travis-ci.org/anaxilaus/coindata)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/anaxilaus/coindata/blob/master/LICENSE)
+[![PyPI version](https://badge.fury.io/py/coindata.svg)](https://badge.fury.io/py/coindata)
+[![Python version](https://img.shields.io/badge/Python-3.5|3.6|3.7-blue.svg)](https://github.com/Anaxilaus/coindata/blob/master/.travis.yml)
+[![Build Status](https://travis-ci.org/Anaxilaus/coindata.svg?branch=master)](https://travis-ci.org/Anaxilaus/coindata)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Anaxilaus/coindata/blob/master/LICENSE)
 
-Parse any crypto's historical data from CoinMarketCap, `write .csv files` or handle as you wish.
-Do not waste time.
+Take one snapshot, use all data as cached.
 
-`Compatible with Python 2 & 3.`
+Use it for machine learning, vector prediction or for whatever you like. Be my guest.
 
+### How this works?
+You take one snapshot, and access hundreds of cryptos without slowing down.
+
+Basically, this program parses all historical data, stores/caches at CSV files through running a snapshot. 
+When you access through this package, requesting a data vector, calculates what coinmarketcap doesn't give you, 
+like circulation supply, daily percentage change, datetime object etc. and returns the vector.
+
+
+
+If you want, you can use .csv files seperately.
+#### File structure
+```
+|source-code:
+    |coindata:
+        |snapshots:
+            |CSV files
+        |tickers:
+            |JSON files
+```
+ 
 ### Install
 
-Install with pip:
-```
-pip install coindata
-```
-Install remotely:
-```
-python setup.py install
-```
-
-### Obtain data instantly.
-
-![](https://media.giphy.com/media/bqU3p01XL126bmEatX/giphy.gif)
-
-### Write .csv file
-
-![](https://thumbs.gfycat.com/QuestionableConstantGander-size_restricted.gif)
-
-`Specify write path with file_path=None parameter.`
-
-
-### Get documentation with help(* func). You can use:
+Install with pip or clone, both works.
 
 ```
-* retrieve
-* write
-* read
-* interval
-* retrieve_raw
-* get_global_data
-* get_ticker
-* get_id
+$ pip install coindata
+---- or ----
+$ git clone git@github.com:anaxilaus/coindata
+$ python coindata/setup.py install
+```
+Requirements are just beautifulsoup4 and requests. Setup installs them itself.
+
+### Modules
+There are 3 modules you will use:
+```
+snapshot
+parser
+request
 ```
 
-### Notes
-`+ Use either symbol or name of crypto. Both works.`
+##### Update cache with `snapshot`
 
+Note: It will ask for a snapshot at initial import, and show you the progress, write out the cache path.
 ```
-# these give same outputs
->>> coindata.retrieve('ltc')
->>> coindata.retrieve('LTC')
->>> coindata.retrieve('litecoin')
->>> coindata.retrieve('LITECOIN')
+
+>>> coindata.snapshot.take()
+```
+
+##### Get data with `parser`
+```
+>>> coindata.parser.vector_of('btc')
+[ 
+  . . .
+ [ 'Date': string,
+   'Open*': float,
+   'High': float,
+   'Low': float,
+   'Close**': float,
+   'Volume': float,
+   'Market Cap': float,
+   # additional info below #
+   'date': datetime.object,
+   'circulation': decimal,
+   'change': float ]
+   . . .
+]
+```
+##### Get specific with `request`
+You don't need to use if you don't want to get specific. API related operations. ( write, read, retrieve without writing, get ticker etc. )
+
+Note: I recommend caching with snapshot.
+```
+# write all history of one $indicator to $where as CSV file
+>>> coindata.request.write($indicator, $where)
+```
+
+#### Get documentation for more with built-in help() or read the code.
+
+### Important Notes
+`+ Symbol, name and case doesn't matter.`
+```
+btc = BTC = bitcoin = BITCOIN
 ```
 
 `+ Based on USD.`
 
-`+ Date notation is ISO8601.`
+`+ Date notation is ISO8601 in CSV files.`
 
 ```
 >>> coindata.ISO8601
 "%Y-%m-%d"
 ```
 
-##### Support
-Tweet, or donate anytime you feel this helped you.
-
-[![Twitter](https://img.shields.io/twitter/url/https/github.com/anaxilaus/coindata.svg?style=social)](https://twitter.com/intent/tweet?text=Check%20this%20out:&url=https%3A%2F%2Fgithub.com%2Fanaxilaus%2Fcoindata)
+#### Give this a star this if you feel this helped you. Contributions are always welcomed.
+##### Also, if you want to buy a beer:
 ```
 BTC: 16XwDdxUaphSX4yWDTTiSfNy2dTyEZ5MLy
 ETH: 0x35F4B63f7eBBB2E6080F7f9f797A068004faf323
