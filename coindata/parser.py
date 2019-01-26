@@ -3,13 +3,12 @@ import json
 import os
 
 from .request import read as read_data
-from .snapshot import LATEST_SNAPSHOT_DIR, TICKER_PATH
+from .snapshot import LATEST_SNAPSHOT_DIR, LATEST_TICKER_PATH
 from .utils import to_datetime
 
-# check for existance of data
+# check for existance of data, warn
 if not LATEST_SNAPSHOT_DIR:
-    raise ValueError('Parser error: No snapshot available!')
-
+    print('No snapshots available! Take snapshot.')
 
 def symbols():
     """Returns all symbols from latest snapshot."""
@@ -55,11 +54,11 @@ def parse_ticker(indicator=None):
 
     # read ticker
     try:
-        with open(TICKER_PATH) as file:
+        with open(LATEST_TICKER_PATH) as file:
             ticker = json.loads(file.read())
 
     except FileNotFoundError:
-        raise FileNotFoundError('Ticker file is not at: ', TICKER_PATH)
+        raise FileNotFoundError('Ticker file is not at: ', LATEST_TICKER_PATH)
 
     # normalize numbers from str
     for i in range(len(ticker)):

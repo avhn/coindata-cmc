@@ -15,51 +15,57 @@ _CONTAINER_DIR = os.path.dirname(os.path.realpath(__file__))
 _SNAPSHOT_ARCHIVE_DIR = os.path.join(_CONTAINER_DIR, 'snapshots')
 if not os.path.exists(_SNAPSHOT_ARCHIVE_DIR):
     os.mkdir(_SNAPSHOT_ARCHIVE_DIR)
-
-_SNAPSHOT_DIR = os.path.join(_SNAPSHOT_ARCHIVE_DIR, _TODAY)
-if not os.path.exists(_SNAPSHOT_DIR):
-    os.mkdir(_SNAPSHOT_DIR)
     
 _TICKER_DIR = os.path.join(_CONTAINER_DIR, 'tickers')
 if not os.path.exists(_TICKER_DIR):
     os.mkdir(_TICKER_DIR)
 
 # below for access of other modules
-TICKER_PATH = None
+LATEST_TICKER_PATH = None
 TICKERS = sorted(os.listdir(_TICKER_DIR))
 LATEST_SNAPSHOT_DIR = None
 SNAPSHOTS = sorted(os.listdir(_SNAPSHOT_ARCHIVE_DIR))
 if SNAPSHOTS:
+    # if there's any cached snapshot, initialize cache paths
     LATEST_SNAPSHOT_DIR = os.path.join(_SNAPSHOT_ARCHIVE_DIR, SNAPSHOTS[-1])
-    TICKER_PATH = os.path.join(_TICKER_DIR, TICKERS[-1])
+    LATEST_TICKER_PATH = os.path.join(_TICKER_DIR, TICKERS[-1])
 
 
-def snapshot(top=150):
+def snapshot(top=100):
 
-    """Takes snapshot.          
+    """Takes snapshot.
 
-    Args:
-        top: Decimal, highest rank of the snapshot from ticker.
+        Args:
+            top: Decimal, highest rank of the snapshot from ticker.
     """
-    
-    ticker = request.get_ticker()
-    
-    # dump ticker
-    with open(os.path.join(_TICKER_DIR, _TODAY + '.json'), 'w') as file:
-        file.write(json.dumps(ticker))
 
+    # initialize snapshot directory and ticker file path
+    _SNAPSHOT_DIR = os.path.join(_SNAPSHOT_ARCHIVE_DIR, _TODAY)
+    if not os.path.exists(_SNAPSHOT_DIR):
+        os.mkdir(_SNAPSHOT_DIR)
+
+    _TICKER_FILEPATH = os.path.join(_TICKER_DIR, _TODAY + '.json')
+
+    # update global variables
+    global LATEST_SNAPSHOT_DIR, LATEST_TICKER_PATH
+    LATEST_SNAPSHOT_DIR, LATEST_TICKER_PATH = _SNAPSHOT_DIR, _TICKER_FILEPATH
+
+    # dump ticker
+    ticker = request.get_ticker()
+    with open(_TICKER_FILEPATH, 'w') as file:
+        file.write(json.dumps(ticker))
     # fetch symbols
     cryptos = [i['symbol'] for i in ticker[:top]]
     
-    # write
+    # fetch, parse and write
     for i, crypto in enumerate(cryptos):
         request.write(crypto, _SNAPSHOT_DIR)
         print(i + 1, "- {} fetched".format(crypto))
-        
-    print('Successfully written at', _SNAPSHOT_DIR, 'and', _TICKER_DIR)
+
+    print('Snapshot successful. Written at', _SNAPSHOT_DIR, 'and', _TICKER_DIR)
 
 
-def main():
+def take_snapshot():
     try:
         snapshot()
 
@@ -68,7 +74,3 @@ def main():
 
     except KeyboardInterrupt:
         print(os.linesep + 'Exiting...')
-
-
-if __name__ == '__main__':
-    main()
