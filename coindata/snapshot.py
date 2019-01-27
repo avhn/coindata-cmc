@@ -31,7 +31,7 @@ if SNAPSHOTS:
     LATEST_TICKER_PATH = os.path.join(_TICKER_DIR, TICKERS[-1])
 
 
-def snapshot(top=100):
+def snapshot(top):
 
     """Takes snapshot.
 
@@ -65,9 +65,14 @@ def snapshot(top=100):
     print('Snapshot successful. Written at', _SNAPSHOT_DIR, 'and', _TICKER_DIR)
 
 
-def take():
+def take(top=100):
+    """Takes snapshot with exception handlers.
+
+        Args:
+            top: Decimal, highest rank of the snapshot from ticker.
+    """
     try:
-        snapshot()
+        snapshot(top)
 
     except ConnectionError:
         print('No internet connection!')
