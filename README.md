@@ -4,29 +4,10 @@
 [![Build Status](https://travis-ci.org/Anaxilaus/coindata.svg?branch=master)](https://travis-ci.org/Anaxilaus/coindata)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Anaxilaus/coindata/blob/master/LICENSE)
 
-Take one snapshot, use all data as cached.
+Daily historical data of all time to date of hundreds of cryptocurrencies.
 
 Use it for machine learning, vector prediction or for whatever you like. Be my guest.
 
-### How this works?
-You take one snapshot, and access hundreds of cryptos without slowing down.
-
-Basically, this program parses all historical data, stores and caches at CSV files through running a snapshot. 
-After you request a data vector, calculates what coinmarketcap doesn't give you, like circulation supply, 
-daily percentage change, datetime object etc. and returns the vector.
-
-If you want, you can use .csv files seperately.
-#### File structure
-```
-source-code:
-    coindata:
-        snapshots:
-            latest-snapshot:
-                CSV files
-        tickers:
-            JSON files
-```
- 
 ### Install
 
 Install with pip or clone, both works.
@@ -50,14 +31,16 @@ parser
 ```
 >>> coindata.snapshot.take()
 ```
-Note: It will ask for a snapshot at initial import. While snapshotting, it will show the progress and write out the cache path.
 
 ##### Access data through `parser`
 ```
 >>> coindata.parser.vector_of('btc')
 [ 
-  . . .
- [ 'Date': string,
+  [Beginning of the time]
+  .
+  .
+  . 
+  ['Date': string,
    'Open*': float,
    'High': float,
    'Low': float,
@@ -67,17 +50,30 @@ Note: It will ask for a snapshot at initial import. While snapshotting, it will 
    # additional info below #
    'date': datetime.object,
    'circulation': decimal,
-   'change': float ]
-   . . .
+   'change': float]
+   . 
+   .
+   .
+   [Today]
 ]
 ```
-##### Extra: Get specific with `request`
-You don't need to use if you don't want API related operations. (write and read csv files, retrieve without writing, get ticker etc.)
 
-Note: I recommend caching with snapshot.
+### How this works?
+Basically, this program parses daily historical data of all time from coinmarketcap's website, stores at CSV files through running a "snapshot."
+After you request a data vector, calculates what coinmarketcap doesn't give you, like circulation supply, 
+daily percentage change, datetime object etc. and returns the vector.
+
+If you want, you can use .csv files seperately.
+
+#### File structure
 ```
-# write all history of one $indicator to $where as CSV file
->>> coindata.request.write($indicator, $where)
+source-code:
+    coindata:
+        snapshots:
+            latest-snapshot:
+                CSV files
+        tickers:
+            JSON files
 ```
 
 ##### Get documentation for more with built-in help() or read the code.
