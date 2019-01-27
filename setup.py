@@ -13,7 +13,7 @@ HISTORY = open('HISTORY.rst').read()
 
 setup(
     name='coindata',
-    version='1.0',
+    version='1.1',
     description='Historical data manager for cryptos.',
     long_description=README + '\n\n' + HISTORY,
     packages=['coindata'],
