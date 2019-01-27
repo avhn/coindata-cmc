@@ -8,7 +8,7 @@ from .utils import to_datetime
 
 # check for existance of data, warn
 if not LATEST_SNAPSHOT_DIR:
-    print('No snapshots available! Take snapshot.')
+    print('No snapshot available! Take first snapshot and reimport.')
 
 def symbols():
     """Returns all symbols from latest snapshot."""
@@ -54,6 +54,8 @@ def parse_ticker(indicator=None):
 
     # read ticker
     try:
+        if not LATEST_TICKER_PATH:
+            raise ValueError('No snapshot available! Take snapshot and reimport.')
         with open(LATEST_TICKER_PATH) as file:
             ticker = json.loads(file.read())
 
