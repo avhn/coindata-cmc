@@ -65,7 +65,7 @@ def snapshot(top=100):
     print('Snapshot successful. Written at', _SNAPSHOT_DIR, 'and', _TICKER_DIR)
 
 
-def take_snapshot():
+def take():
     try:
         snapshot()
 
