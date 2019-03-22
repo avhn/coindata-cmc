@@ -3,7 +3,7 @@ from setuptools import setup
 
 # requirements
 reqs = list()
-with open('requirements.txt', encoding='utf-8') as file:
+with open('requirements.txt') as file:
     for line in file:
         reqs.append(line.strip())
 
@@ -13,7 +13,7 @@ HISTORY = open('HISTORY.rst').read()
 
 setup(
     name='coindata',
-    version='1.2',
+    version='1.3',
     description='Historical data manager for cryptos.',
     long_description=README + '\n\n' + HISTORY,
     packages=['coindata'],

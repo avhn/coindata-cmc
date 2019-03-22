@@ -1,6 +1,15 @@
 History
 =======
 
+1.3 (2019-03-22)
+----------------
+
+- Refactor snapshot.py to cache.py
+- Migrate from snapshot logic to single caching
+- Update documentation
+- Update parsing for coinmarketcap's html template change
+- Add test case
+
 1.2 (2019-01-28)
 ----------------
 
@@ -23,3 +32,4 @@ History
 ----------------
 
 - First release
+
