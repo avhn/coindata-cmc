@@ -12,5 +12,5 @@ build
 dist
 
 # cache directories
-snapshots
+cache
 tickers
