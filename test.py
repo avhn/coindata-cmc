@@ -23,7 +23,7 @@ class TestBuild(unittest.TestCase):
                 # passed
                 return True
 
-    def test_retrieve(self):
+    def test_retrieve_with_all_input_formats(self):
         """Try retrieve with all possible input formats."""
 
         for inp in self._possible_input_formats:
@@ -49,6 +49,12 @@ class TestBuild(unittest.TestCase):
         # test
         if not self.is_same(data, data_comp):
             raise ValueError()
+
+    def test_cache_and_get(self):
+        """Compare cache and get's outputs."""
+
+        coindata.cache('BITCOIN')
+        coindata.get('btc')
 
 
 if __name__ == "__main__":
