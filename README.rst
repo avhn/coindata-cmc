@@ -5,7 +5,7 @@ Coindata
 |Build Status|
 |License|
 
-Daily historical data of all time to date of hundreds of cryptocurrencies.
+Historical data all cryptocurrencies.
 
 Use it for machine learning, vector prediction or for whatever you like. Be my guest.
 
@@ -16,36 +16,29 @@ Install with pip or clone, both works.
 
 .. code:: bash
 
-    $ pip install coindata
-    ---- or ----
-    $ git clone git@github.com:anaxilaus/coindata
+    $ git clone https://github.com/Anaxilaus/coindata
     $ python coindata/setup.py install
     
+or just do ``pip install coindata``
+
 Setup installs requirements itself. Requirements are beautifulsoup4 and requests. 
 
-Usage with Modules
-------------------
+Usage
+-----
 
-There are only 2 modules you will use:
-
-::
-
-    snapshot
-    parser
-
-Update cache with ``snapshot``
+Cache with ``cache``
 ------------------------------
 
 .. code:: python
 
-    >>> coindata.snapshot.take()
+    >>> coindata.cache('xrp')
 
-Get data with ``parser``
-------------------------
+Access data through ``get``
+---------------------------
 
 .. code:: python
 
-    >>> coindata.parser.vector_of('btc')
+    >>> coindata.get('RIPPLE')
         [
           [Beginning of the time]
           . 
@@ -68,12 +61,7 @@ Get data with ``parser``
           [Today]
         ]
         
-
-How this works?
----------------
-Basically, this program parses daily historical data of all time from coinmarketcap's website, stores at CSV files through running a "snapshot." After you request a data vector, calculates what coinmarketcap doesn't give you, like circulation supply, daily percentage change, datetime object etc. and returns the vector.
-
-If you want, you can use .csv files seperately.
+``Note:`` Any form of input is legit: ``xrp = XRP = ripple = RIPPLE``
 
 File structure:
 ---------------
@@ -82,14 +70,13 @@ File structure:
 
     source-code:
         coindata:
-            snapshots:
-                latest-snapshot:
-                    CSV files
+            cache:
+                CSV files
             tickers:
                 JSON files
 
 
-`Get documentation for more with built-in help() or read the code.`
+``Read documentation at code for a lot more functionality``
 
 Important Notes
 ---------------
@@ -103,22 +90,14 @@ Important Notes
 ``+ Based on USD.``
 
 ``+ Date notation is ISO8601 in CSV files.``
+
 .. code:: python
 
     >>> coindata.ISO8601
     "%Y-%m-%d"
 
 
-Give this a star this if you feel this helped you.
-
-Also, if you want to buy a beer:
-
-::
-
-    BTC: 16XwDdxUaphSX4yWDTTiSfNy2dTyEZ5MLy
-    ETH: 0x35F4B63f7eBBB2E6080F7f9f797A068004faf323
-    LTC: LdukNLZqzeEvvFYMw98L9Rj8AYvP86BhEe
-
+Give this a star this if you feel this helped you. Contributions always welcome.
 
 .. |PyPI| image:: https://badge.fury.io/py/coindata.svg
     :target: https://badge.fury.io/py/coindata
