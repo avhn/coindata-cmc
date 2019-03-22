@@ -1,21 +1,17 @@
-"""Handles Offline Snapshot datas."""
 import json
 import os
 
 from .request import read as read_data
-from .snapshot import LATEST_SNAPSHOT_DIR, LATEST_TICKER_PATH
+from .cache import CACHE_DIR, LATEST_TICKER_PATH
 from .utils import to_datetime
 
-# check for existance of data, warn
-if not LATEST_SNAPSHOT_DIR:
-    print('No snapshot available! Take first snapshot and reimport.')
 
 def symbols():
     """Returns all symbols from latest snapshot."""
 
     result = list()
 
-    for symbol in os.listdir(LATEST_SNAPSHOT_DIR):
+    for symbol in os.listdir(CACHE_DIR):
         # remove .csv from names
         symbol = symbol[:-4]
         result.append(symbol)
@@ -39,7 +35,10 @@ def normalize_str(string):
 
 
 def parse_ticker(indicator=None):
-    """Get ticker of a specific crypto from latest snapshot.
+
+    """
+    Get ticker of a specific crypto from latest snapshot.
+    If no argument passed, returns whole ticker.
 
     Args:
         indicator: indicator of crypto
@@ -54,13 +53,12 @@ def parse_ticker(indicator=None):
 
     # read ticker
     try:
-        if not LATEST_TICKER_PATH:
-            raise ValueError('No snapshot available! Take snapshot and reimport.')
         with open(LATEST_TICKER_PATH) as file:
             ticker = json.loads(file.read())
 
-    except FileNotFoundError:
-        raise FileNotFoundError('Ticker file is not at: ', LATEST_TICKER_PATH)
+    except BaseException as e:
+        raise ValueError("Can't parse ticker, error: ", e)
+
 
     # normalize numbers from str
     for i in range(len(ticker)):
@@ -76,7 +74,7 @@ def parse_ticker(indicator=None):
                 if isinstance(data[key], str) and data[key].upper() == indicator.upper():
                     return data
 
-        # indicator is not fould in snapshot
+        # indicator is not found in snapshot
         raise ValueError('Indicator not found: ', indicator)
 
     else:
@@ -104,7 +102,7 @@ def parse(indicator):
 
     # set path of data
     filename = symbol.upper() + '.csv'
-    filepath = os.path.join(LATEST_SNAPSHOT_DIR, filename)
+    filepath = os.path.join(CACHE_DIR, filename)
 
     return read_data(filepath)
 

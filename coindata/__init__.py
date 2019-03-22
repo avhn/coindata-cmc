@@ -1,3 +1,2 @@
-from . import request
-from . import parser
-from . import snapshot
+from .parser import vector_of as get
+from .cache import cache
