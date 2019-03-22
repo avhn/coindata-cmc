@@ -1,7 +1,3 @@
-"""
-Handles online network requests.
-Writes data, reads as written to use as cache.
-"""
 import csv
 from datetime import datetime
 import os
@@ -117,7 +113,12 @@ def retrieve_raw(crypto):
         else:
             # arrange date and numbers
             # change time format to ISO 8601
-            date = datetime.strptime(' '.join(tag[0:3]), CMC_TIME_FORMAT).strftime(ISO8601)
+            try:
+                date = datetime.strptime(' '.join(tag[0:3]), CMC_TIME_FORMAT).strftime(ISO8601)
+            except ValueError:
+                # end of data at tr tags
+                break
+
             tag = [date] + [number.replace(',', '') for number in tag[3:]]
 
         data.append(tag)
@@ -169,7 +170,7 @@ def write(crypto, dir_path=None):
     Dates represented with ISO 8601.
 
     Args:
-        crypto: Symbol, name or coinmarketcap id.
+        crypto: Symbol, name or coinmarketcap id, case insensitive.
         dir_path: Optional variable, directory to write file.
             If no variable passed, uses cwd.
 
@@ -222,4 +223,3 @@ def read(file_path):
                 result.append(data)
 
     return result
-
