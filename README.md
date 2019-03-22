@@ -20,7 +20,7 @@ or just  ```$ pip install coindata```
 
 Setup installs requirements itself. Requirements are beautifulsoup4 and requests. 
 
-##Usage
+## Usage
 ##### Cache with `cache`
 
 ```
