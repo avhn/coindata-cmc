@@ -89,7 +89,7 @@ def parse(indicator):
 
     Returns:
         Sequence of dicts.
-        Reads with coindata.read, therefore output is
+        Reads with request.read, therefore output is
         represented by it.
     """
 
