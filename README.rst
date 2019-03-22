@@ -97,7 +97,7 @@ Important Notes
     "%Y-%m-%d"
 
 
-Give this a star this if you feel this helped you. Contributions always welcome.
+Give this a star if you feel this helped you. Contributions always welcome.
 
 .. |PyPI| image:: https://badge.fury.io/py/coindata.svg
     :target: https://badge.fury.io/py/coindata

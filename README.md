@@ -20,7 +20,7 @@ or just  ```$ pip install coindata```
 
 Setup installs requirements itself. Requirements are beautifulsoup4 and requests. 
 
-##Usage
+## Usage
 ##### Cache with `cache`
 
 ```
@@ -88,4 +88,4 @@ btc = BTC = bitcoin = BITCOIN
 "%Y-%m-%d"
 ```
 
-#### Give this a star this if you feel this helped you. Contributions are always welcome.
+#### Give this a star if you feel this helped you. Contributions are always welcome.
