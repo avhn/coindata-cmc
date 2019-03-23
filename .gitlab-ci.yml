@@ -1,6 +1,0 @@
-# Python 3 latest
-build:python3:
-  image: python:latest
-  script:
-    - python setup.py install
-    - python test.py
