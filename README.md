@@ -6,7 +6,19 @@
 
 Historical data of all cryptos from CoinMarketCap.
 
-### Install
+**Examples:**
+- CSV
+    - [`BTC.csv`](https://github.com/Anaxilaus/coindata/tree/master/example/cache_files/BTC.csv)
+    - [`XRP.csv`](https://github.com/Anaxilaus/coindata/tree/master/example/cache_files/XRP.csv)
+    - [`ETH.csv`](https://github.com/Anaxilaus/coindata/tree/master/example/cache_files/ETH.csv)
+
+- JSON
+    - [`BTC.json`](https://github.com/Anaxilaus/coindata/tree/master/example/dump_json/btc.json)
+    - [`XRP.json`](https://github.com/Anaxilaus/coindata/tree/master/example/dump_json/xrp.json)
+    - [`ETH.json`](https://github.com/Anaxilaus/coindata/tree/master/example/dump_json/eth.json)
+
+
+## Install
 
 **Pip:**
 ```
@@ -21,18 +33,12 @@ $ python coindata/setup.py install
 
 `Requirements:` beautifulsoup4 and requests. Setup installs requirements itself. 
 
-### Usage
-#### Cache with `cache`
+## Usage
+#### Cache and get
 
 ```
 >>> coindata.cache('xrp')
 XRP written at $PROJECT_DIR/coindata/cache/XRP.csv
-```
-
-#### Access through `get`
-
-**Note:** You can dump this data as JSON to use elsewhere.
-```
 >>> coindata.get('xrp')
 [
   {Beginning of the time}
@@ -46,7 +52,7 @@ XRP written at $PROJECT_DIR/coindata/cache/XRP.csv
    'Close**': float,
    'Volume': float,
    'Market Cap': float,
-   # additional info below #
+   # additional calculated info below #
    'date': datetime.object,
    'circulation': decimal,
    'change': float}
@@ -57,10 +63,15 @@ XRP written at $PROJECT_DIR/coindata/cache/XRP.csv
 ]
 ```
 
-#### File structure
+#### Dump as JSON to use elsewhere.
 
- You can use cache files:
+[`Example JSON dump.`](https://github.com/Anaxilaus/coindata/tree/master/example/dump_json)
 
+
+## File structure
+
+You can use cache files:
+[`Example cache files.`](https://github.com/Anaxilaus/coindata/tree/master/example/cache_files)
 ```
 source-code
 ├── coindata
@@ -70,9 +81,9 @@ source-code
 │   │   ├── JSON files
 ```
 
-##### Read documentation at code for a lot more functionality.
+**Read documentation at code for a lot more functionality.**
 
-### Notes
+## Notes
 
 - Symbol, name and case-insensitive.
 
