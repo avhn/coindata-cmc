@@ -2,7 +2,7 @@ import json
 import os
 
 from .request import read as read_data
-from .cache import CACHE_DIR, LATEST_TICKER_PATH
+from .cacher import CACHE_DIR, LATEST_TICKER_PATH
 from .utils import to_datetime
 
 
