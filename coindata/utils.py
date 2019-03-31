@@ -1,6 +1,7 @@
 """Utility functions defined here."""
 import csv
 from datetime import datetime
+import json
 
 from .request import ISO8601
 
@@ -44,3 +45,13 @@ def write_csv(path, iterable):
     with open(path, 'w') as csv_file:
         writer = csv.writer(csv_file)
         writer.writerows(iterable)
+
+
+def dump_json(data, filepath):
+    """Dump data as JSON."""
+
+    try:
+        with open(filepath, 'w') as file:
+            json.dump(data, filepath)
+    except TypeError as e:
+        print("Data isn't JSON compatible.\n", e)
