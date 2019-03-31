@@ -6,6 +6,11 @@ from .cache import CACHE_DIR, LATEST_TICKER_PATH
 from .utils import to_datetime
 
 
+class CacheFileNotFound(FileNotFoundError):
+    def __init__(self):
+        super().__init__()
+
+
 def symbols():
     """Returns all symbols from latest snapshot."""
 
@@ -59,12 +64,10 @@ def parse_ticker(indicator=None):
     except BaseException as e:
         raise ValueError("Can't parse ticker, error: ", e)
 
-
     # normalize numbers from str
     for i in range(len(ticker)):
         for key in ticker[i]:
             ticker[i][key] = normalize_str(ticker[i][key])
-
 
     if indicator:
         keys = ['symbol', 'name', 'id']
@@ -100,9 +103,12 @@ def parse(indicator):
     # confirm or find real symbol
     symbol = parse_ticker(indicator)['symbol']
 
-    # set path of data
+    # set path of dataååå
     filename = symbol.upper() + '.csv'
     filepath = os.path.join(CACHE_DIR, filename)
+
+    if not os.path.exists(filepath):
+        raise CacheFileNotFound()
 
     return read_data(filepath)
 
