@@ -1,6 +1,12 @@
 History
 =======
 
+1.4 (2019-03-31)
+----------------
+- Update documentation
+- Dump as JSON
+- Refactor cache.py to cacher.py
+
 1.3 (2019-03-22)
 ----------------
 
