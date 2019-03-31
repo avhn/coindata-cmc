@@ -52,6 +52,6 @@ def dump_json(data, filepath):
 
     try:
         with open(filepath, 'w') as file:
-            json.dump(data, filepath)
+            json.dump(data, file)
     except TypeError as e:
         print("Data isn't JSON compatible.\n", e)
