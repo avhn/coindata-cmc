@@ -1,4 +1,6 @@
-"""Utility functions defined here."""
+#!/usr/bin/env python3
+# -*- encoding: utf-8 -*-
+
 import csv
 from datetime import datetime
 import json
