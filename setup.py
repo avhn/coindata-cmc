@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import os
 from setuptools import setup
 
 # requirements
@@ -17,9 +18,9 @@ setup(
     name='coindata',
     version='1.4',
     description='Historical data manager for cryptos.',
-    long_description=README + '\n\n' + HISTORY,
+    long_description=README + (os.linesep * 2) + HISTORY,
     packages=['coindata'],
-    url='https://github.com/anaxilaus/coindata',
+    url='https://github.com/Anaxilaus/coindata',
     author='Anaxilaus',
     install_requires=reqs
 )
