@@ -1,31 +1,34 @@
 ## Coindata
-[![PyPI version](https://badge.fury.io/py/coindata.svg)](https://badge.fury.io/py/coindata)
-[![Python version](https://img.shields.io/badge/Python-3.5|3.6|3.7-blue.svg)](https://github.com/Anaxilaus/coindata/blob/master/.travis.yml)
+[![PyPI version](https://badge.fury.io/py/coindata.svg)](https://pypi.org/project/coindata/)
 [![Build Status](https://travis-ci.org/Anaxilaus/coindata.svg?branch=master)](https://travis-ci.org/Anaxilaus/coindata)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/Anaxilaus/coindata/blob/master/LICENSE)
+[![Python Version](https://img.shields.io/badge/python-3.5%20|%203.6%20|%203.7-blue.svg)](./.travis.yml)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](./LICENSE)
 
 Historical data of all cryptos from CoinMarketCap.
 
 **Examples:**
+
 - CSV
-    - [`BTC.csv`](https://github.com/Anaxilaus/coindata/tree/master/examples/cache_files/BTC.csv)
-    - [`XRP.csv`](https://github.com/Anaxilaus/coindata/tree/master/examples/cache_files/XRP.csv)
-    - [`ETH.csv`](https://github.com/Anaxilaus/coindata/tree/master/examples/cache_files/ETH.csv)
+    - [`BTC.csv`](./examples/cache_files/BTC.csv)
+    - [`XRP.csv`](./examples/cache_files/XRP.csv)
+    - [`ETH.csv`](./examples/cache_files/ETH.csv)
 
 - JSON
-    - [`BTC.json`](https://github.com/Anaxilaus/coindata/tree/master/examples/dump_json/btc.json)
-    - [`XRP.json`](https://github.com/Anaxilaus/coindata/tree/master/examples/dump_json/xrp.json)
-    - [`ETH.json`](https://github.com/Anaxilaus/coindata/tree/master/examples/dump_json/eth.json)
+    - [`BTC.json`](./examples/dump_json/btc.json)
+    - [`XRP.json`](./examples/dump_json/xrp.json)
+    - [`ETH.json`](./examples/dump_json/eth.json)
 
 
 ## Install
 
 **Pip:**
+
 ```
 $ pip install coindata
 ```
 
 **Clone repository:**
+
 ```
 $ git clone https://github.com/Anaxilaus/coindata
 $ python coindata/setup.py install
@@ -65,12 +68,13 @@ XRP written at $PROJECT_DIR/coindata/cache/XRP.csv
 
 #### Dump as JSON to use elsewhere.
 
-[`Example JSON dump.`](https://github.com/Anaxilaus/coindata/tree/master/examples/dump_json)
+[`Example JSON dump.`](./examples/dump_json)
 
 
 ## File structure
 
 You can use cache files:
+
 ```
 source-code
 ├── coindata
@@ -79,7 +83,8 @@ source-code
 │   ├── tickers
 │   │   ├── JSON files
 ```
-[`Example cache files.`](https://github.com/Anaxilaus/coindata/tree/master/examples/cache_files)
+
+[`Example cache files.`](./examples/cache_files)
 
 **Read documentation at code for a lot more functionality.**
 
@@ -100,4 +105,4 @@ btc = BTC = bitcoin = BITCOIN
 "%Y-%m-%d"
 ```
 
-#### Give this a star if you feel this helped you. Contributions are always welcome.
+### Give this a star if you feel this helped you. Contributions are always welcome.
