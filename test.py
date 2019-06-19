@@ -23,8 +23,8 @@ class TestBasicOperations(unittest.TestCase):
                 if not data1[i][key] == data2[i][key]:
                     return False
     
-            # passed
-            return True
+        # passed
+        return True
 
     def test_retrieve_with_all_input_formats(self):
         """Try retrieve with all possible input formats."""
