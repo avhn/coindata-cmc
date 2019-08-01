@@ -9,8 +9,8 @@ from .utils import to_datetime
 
 
 class CacheFileNotFound(FileNotFoundError):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args):
+        super().__init__(self, *args)
 
 
 def symbols():
@@ -54,8 +54,7 @@ def parse_ticker(indicator=None):
         A sequence of dicts.
         If indicator passed, returns just one dict.
     Raises:
-        ValueError: Indicator not found
-        FileNotFoundError: Path is wrong
+        ValueError: Invalid indicator, symbol not found.
     """
 
     # read ticker
@@ -64,7 +63,7 @@ def parse_ticker(indicator=None):
             ticker = json.loads(file.read())
 
     except BaseException as e:
-        raise ValueError("Can't parse ticker, error: ", e)
+        raise ValueError("Can't read ticker, error: ", e)
 
     # normalize numbers from str
     for i in range(len(ticker)):
@@ -80,7 +79,7 @@ def parse_ticker(indicator=None):
                     return data
 
         # indicator is not found in snapshot
-        raise ValueError('Indicator not found: ', indicator)
+        raise ValueError('Invalid symbol! Symbol not found for: ', indicator)
 
     else:
         return ticker
@@ -96,6 +95,9 @@ def parse(indicator):
         Sequence of dicts.
         Reads with request.read, therefore output is
         represented by it.
+    Raises:
+        ValueError: Invalid indicator, no symbol found.
+        CacheFileNotFound: Indicator not cached.
     """
 
     # normalize if needed
@@ -105,12 +107,12 @@ def parse(indicator):
     # confirm or find real symbol
     symbol = parse_ticker(indicator)['symbol']
 
-    # set path of dataååå
+    # set path of data
     filename = symbol.upper() + '.csv'
     filepath = os.path.join(CACHE_DIR, filename)
 
     if not os.path.exists(filepath):
-        raise CacheFileNotFound()
+        raise CacheFileNotFound("Cache file doesn't exists: ", symbol)
 
     return read_data(filepath)
 
@@ -141,9 +143,9 @@ def vector_of(indicator, as_json=True):
             'Market Cap': float,
 
             # additional info below #
-            'date': datetime.object,
             'circulation': decimal,
             'change': float,
+            'date': datetime.object
         ])
 
         Computation of additional keys:
@@ -151,6 +153,10 @@ def vector_of(indicator, as_json=True):
             'date': datetime.datetime object
             'circulation': Market Cap / Open*
             'change': Market Cap / previous Market Cap
+
+    Raises:
+        ValueError: Invalid indicator, no symbol found.
+        CacheFileNotFound: Indicator not cached.
     """
 
     result = list()

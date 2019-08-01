@@ -55,10 +55,12 @@ XRP written at $PROJECT_DIR/coindata/cache/XRP.csv
    'Close**': float,
    'Volume': float,
    'Market Cap': float,
+   
    # additional calculated info below #
-   'date': datetime.object,
    'circulation': decimal,
-   'change': float}
+   'change': float,
+   'date': datetime.object
+   }
    . 
    .
    .

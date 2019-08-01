@@ -56,8 +56,12 @@ def cache(indicator):
 
     Write cache files as "{symbol_of_indicator}.csv".
 
-        Args:
-            indicator: Symbol or name of the crypto. Case insensitive.
+    Args:
+        indicator: Symbol or name of the crypto. Case insensitive.
+
+    Raises:
+        ValueError: Invalid indicator, no symbol found.
+        CacheFileNotFound: Indicator not cached.
     """
 
     # dump ticker
