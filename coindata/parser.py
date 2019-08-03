@@ -117,7 +117,7 @@ def parse(indicator):
     return read_data(filepath)
 
 
-def vector_of(indicator, as_json=True):
+def vector_of(indicator, json_compatible=True):
     """Fetch daily data.
 
     Computes daily change, circulation supply, datetime object
@@ -125,7 +125,7 @@ def vector_of(indicator, as_json=True):
 
     Args:
         indicator: Indicator of crypto
-        as_json:
+        json_compatible:
             Boolean indicating, JSON compatible or not.
             If passed as false, datetime object included in vector.
 
@@ -167,7 +167,7 @@ def vector_of(indicator, as_json=True):
         if data['Market Cap'] != '-':
 
             # generate datetime object
-            if not as_json:
+            if not json_compatible:
                 date = to_datetime(data['Date'])
                 data['date'] = date
 
