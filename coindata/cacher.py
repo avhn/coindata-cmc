@@ -61,7 +61,6 @@ def cache(indicator):
 
     Raises:
         ValueError: Invalid indicator, no symbol found.
-        CacheFileNotFound: Indicator not cached.
     """
 
     # dump ticker
