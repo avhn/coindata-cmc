@@ -1,3 +1,5 @@
+This project is no longer maintainted since [Yahoo Finance](https://finance.yahoo.com/cryptocurrencies) started to offer historical data of all cryptocurrency markets from CoinMarketCap in csv format.
+
 ## Coindata
 [![PyPI version](https://badge.fury.io/py/coindata.svg)](https://pypi.org/project/coindata/)
 [![Build Status](https://travis-ci.org/Anaxilaus/coindata.svg?branch=master)](https://travis-ci.org/Anaxilaus/coindata)
